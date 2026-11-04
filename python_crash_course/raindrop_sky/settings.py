@@ -9,3 +9,6 @@ class Settings:
         self.background_color = (69, 74, 125)
         
         self.framerate = 60
+
+        # Raindrops settings
+        self.raindrop_update_interval = 20

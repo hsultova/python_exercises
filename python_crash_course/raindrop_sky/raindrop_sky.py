@@ -20,22 +20,21 @@ class RaindropSky:
         pygame.display.set_caption('Raindrop sky')
 
         self.raindrops = pygame.sprite.Group()
-        self._create_raindrops()
 
-        self.pause_raindrops = False
+        self.continuous_spawning = False
         self.frame_counter = 0
 
-    def _chek_events(self):
+    def _check_events(self):
         """Handling keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit() 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    self.pause_raindrops = not self.pause_raindrops
+                if event.key == pygame.K_s:
+                    self.continuous_spawning = not self.continuous_spawning
 
     def _create_raindrops(self):
-        """Fill the sky with the raindrops."""
+        """Create a full sky of raindrops."""
         raindrop = Raindrop(self)
         raindrop_width, raindrop_height = raindrop.rect.size
 
@@ -55,6 +54,36 @@ class RaindropSky:
         new_raindrop.rect.y = y_position
         self.raindrops.add(new_raindrop)
 
+    def _spawn_raindrops_periodically(self):
+        """Spawn raindrops to the sky at regular intervals."""
+        self.frame_counter += 1
+        if self.frame_counter % self.settings.raindrop_update_interval == 0:
+            self._create_raindrops()
+
+    def _remove_offscreen_raindrops(self):
+        """Remove raindrops that disappeared from the screen."""
+        for raindrop in self.raindrops.sprites():
+            if raindrop.check_edges():
+                raindrop.kill()
+
+    def _spawn_raindrops_if_empty(self):
+        """Spawn raindrops to the sky if there are no raindrops."""
+        if not self.raindrops:
+            self._create_raindrops()
+
+    def _run_spawn_strategy(self):
+        """Run the appropriate raindrop spawn strategy."""
+        if self.continuous_spawning:
+            self._spawn_raindrops_periodically()
+        else:            
+            self._spawn_raindrops_if_empty()
+
+    def _update_raindrops(self):
+        """Update the position of raindrops."""
+        self._remove_offscreen_raindrops()
+        self._run_spawn_strategy()
+        self.raindrops.update()
+
     def _update_screen(self):
         """Update images on the screen and flip to the new screen."""
         self.screen.fill(self.settings.background_color) 
@@ -65,17 +94,10 @@ class RaindropSky:
     def run_game(self):
         """Start the main loop for the game"""
         while True:
-            self._chek_events()
-
-            self.frame_counter +=1
-
-            if not self.pause_raindrops and self.frame_counter % 5 == 0:
-                self._create_raindrops()
-
-            self.raindrops.update()
+            self._check_events()
+            self._update_raindrops()            
             self._update_screen()
             self.clock.tick(self.settings.framerate)
-
 
 if __name__ == '__main__':
     raindrop_sky = RaindropSky()

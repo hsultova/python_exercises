@@ -23,8 +23,13 @@ class Raindrop(Sprite):
 
         self.y = float(self.rect.y)
 
+    def check_edges(self) -> bool:
+        """Check if the raindrop has reached the bottom of the screen."""
+        screen_rect = self.screen.get_rect()
+        return self.rect.top >= screen_rect.bottom 
+
     def update(self):
-        """Move the raindrop down."""
+        """Move the raindrop down the screen."""
         self.y += self.drop_speed
         self.rect.y = self.y
 
