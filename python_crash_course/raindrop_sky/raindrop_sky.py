@@ -3,8 +3,9 @@ import sys
 
 import pygame
 
+from raindrops_settings import Settings
 from raindrop import Raindrop
-from settings import Settings
+
 
 class RaindropSky:
     """Overall class that manages the raindrop sky."""
