@@ -1,6 +1,8 @@
 # Raindrop Sky
 
 A small Pygame animation in which rows of raindrops fall down the screen.
+![](https://github.com/hsultova/python_exercises/blob/main/python_crash_course/raindrop_sky/screenshots/sky.gif)
+![](https://github.com/hsultova/python_exercises/blob/main/python_crash_course/raindrop_sky/screenshots/sky2.gif)
 
 ## Behavior
 
