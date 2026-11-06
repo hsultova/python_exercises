@@ -106,8 +106,8 @@ class SidewaysShooter:
         half_width = self.settings.screen_width // 2
 
         for _ in range(self.settings.enemy_spawn_count):
-            random_x = random.randint(half_width, self.settings.screen_width - self.settings.enemy_size)
-            random_y = random.randint(0, self.settings.screen_height -  self.settings.enemy_size)
+            random_x = random.randint(half_width, self.settings.screen_width - self.settings.enemy_width)
+            random_y = random.randint(0, self.settings.screen_height -  self.settings.enemy_height)
             self._create_enemy(random_x, random_y)
 
     def _check_bullet_enemy_collisions(self):

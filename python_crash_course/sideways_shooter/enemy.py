@@ -13,7 +13,7 @@ class Enemy(Sprite):
         self.screen_rect = screen.get_rect()
 
         self.image = pygame.image.load('images/spaceship.png')
-        self.image: pygame.Surface = pygame.transform.scale(self.image, (settings.enemy_size, settings.enemy_size))
+        self.image: pygame.Surface = pygame.transform.scale(self.image, (settings.enemy_width, settings.enemy_height))
         self.rect: pygame.Rect = self.image.get_rect()
 
         self.rect.x = self.settings.screen_width
