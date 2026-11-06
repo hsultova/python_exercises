@@ -53,6 +53,7 @@ class SidewaysShooter:
     def _update_bullets(self):
         """Update the position of bullets and get rid of old bullets."""
         self.bullets.update()
+        self._check_bullet_enemy_collisions()
 
         # Get rid of bullets that have disappeared off the screen
         for bullet in self.bullets.copy():
@@ -109,6 +110,13 @@ class SidewaysShooter:
             random_y = random.randint(0, self.settings.screen_height -  self.settings.enemy_size)
             self._create_enemy(random_x, random_y)
 
+    def _check_bullet_enemy_collisions(self):
+        """Check for collisions between bullets and enemies."""
+        collisions = pygame.sprite.groupcollide(self.bullets, self.enemies, True, True)
+        if collisions:
+            for enemies in collisions.values():
+                for enemy in enemies:
+                    self.enemies.remove(enemy)
 
 if __name__ == "__main__":
     game = SidewaysShooter()
