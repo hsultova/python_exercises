@@ -11,4 +11,4 @@ class Settings:
         self.framerate = 60
 
         # Raindrops settings
-        self.raindrop_update_interval = 20
+        self.raindrop_spawn_ms = 200

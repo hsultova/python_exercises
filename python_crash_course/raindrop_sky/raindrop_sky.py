@@ -23,7 +23,7 @@ class RaindropSky:
         self.raindrops = pygame.sprite.Group()
 
         self.continuous_spawning = False
-        self.frame_counter = 0
+        self.spawn_timer = 0
 
     def _check_events(self):
         """Handling keypresses and mouse events."""
@@ -56,10 +56,11 @@ class RaindropSky:
         self.raindrops.add(new_raindrop)
 
     def _spawn_raindrops_periodically(self):
-        """Spawn raindrops to the sky at regular intervals."""
-        self.frame_counter += 1
-        if self.frame_counter % self.settings.raindrop_update_interval == 0:
+        """Spawn raindrops periodically based on the spawn timer."""
+        self.spawn_timer += self.clock.get_time()
+        if self.spawn_timer > self.settings.raindrop_spawn_ms:
             self._create_raindrops()
+            self.spawn_timer -= self.settings.raindrop_spawn_ms
 
     def _remove_offscreen_raindrops(self):
         """Remove raindrops that disappeared from the screen."""
