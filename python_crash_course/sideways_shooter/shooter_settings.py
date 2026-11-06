@@ -18,3 +18,8 @@ class Settings:
         self.bullet_height = 15
         self.bullet_speed = 3.5
         self.bullet_color = (220, 175, 155)
+
+        # Enemy settings
+        self.enemy_size = 80
+        self.enemy_spawn_count = 5
+        self.enemy_speed = 2.0

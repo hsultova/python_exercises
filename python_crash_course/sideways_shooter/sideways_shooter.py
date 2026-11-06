@@ -1,8 +1,10 @@
+import random
 import sys
 
 import pygame
 
 from bullet import Bullet
+from enemy import Enemy
 from ship import Ship
 from shooter_settings import Settings
 
@@ -21,6 +23,9 @@ class SidewaysShooter:
 
         self.ship = Ship(self.screen, self.settings)
         self.bullets = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
+
+        self._spawn_enemies_at_random()
 
     def run(self):
         """Run the game."""
@@ -28,6 +33,8 @@ class SidewaysShooter:
             self._chek_events()
             self.ship.update()
             self._update_bullets()
+            self.enemies.update()
+
             self._update_screen()
 
             self.clock.tick(self.settings.framerate)
@@ -36,6 +43,7 @@ class SidewaysShooter:
         """Update the screen during each pass through the loop."""
         self.screen.fill(self.settings.background_color)
         self.ship.draw()
+        self.enemies.draw(self.screen)
         
         for bullet in self.bullets.sprites():
             bullet.draw()
@@ -83,6 +91,24 @@ class SidewaysShooter:
         """Create a new bullet and add it to the bullets group."""
         new_bullet = Bullet(self.screen, self.settings, self.ship)
         self.bullets.add(new_bullet)
+
+    def _create_enemy(self, x_position: float, y_position: float):
+        """Create a new enemy and add it to the enemies group."""
+        new_enemy = Enemy(self.screen, self.settings)
+        new_enemy.x = x_position
+        new_enemy.rect.x = x_position
+        new_enemy.rect.y = y_position
+        self.enemies.add(new_enemy)
+
+    def _spawn_enemies_at_random(self):
+        """Spawn enemies at random positions on the right side of the screen."""
+        half_width = self.settings.screen_width // 2
+
+        for _ in range(self.settings.enemy_spawn_count):
+            random_x = random.randint(half_width, self.settings.screen_width - self.settings.enemy_size)
+            random_y = random.randint(0, self.settings.screen_height -  self.settings.enemy_size)
+            self._create_enemy(random_x, random_y)
+
 
 if __name__ == "__main__":
     game = SidewaysShooter()
