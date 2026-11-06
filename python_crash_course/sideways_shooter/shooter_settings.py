@@ -9,3 +9,6 @@ class Settings:
         self.background_color = (60, 60, 70)
         
         self.framerate = 60
+
+        # Ship settings
+        self.ship_speed = 7.0
