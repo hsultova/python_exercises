@@ -6,9 +6,15 @@ class Settings:
         # Screen settings
         self.screen_width = 1200
         self.screen_height = 800
-        self.background_color = (60, 60, 70)
+        self.background_color = (120, 145, 180)
         
         self.framerate = 60
 
         # Ship settings
         self.ship_speed = 7.0
+
+        # Bullet settings
+        self.bullet_width = 15
+        self.bullet_height = 15
+        self.bullet_speed = 3.5
+        self.bullet_color = (220, 175, 155)

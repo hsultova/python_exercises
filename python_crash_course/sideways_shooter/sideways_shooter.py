@@ -2,6 +2,7 @@ import sys
 
 import pygame
 
+from bullet import Bullet
 from ship import Ship
 from shooter_settings import Settings
 
@@ -19,12 +20,14 @@ class SidewaysShooter:
         pygame.display.set_caption('Sideways Shooter')
 
         self.ship = Ship(self.screen, self.settings)
+        self.bullets = pygame.sprite.Group()
 
     def run(self):
         """Run the game."""
         while True:
             self._chek_events()
             self.ship.update()
+            self._update_bullets()
             self._update_screen()
 
             self.clock.tick(self.settings.framerate)
@@ -33,7 +36,20 @@ class SidewaysShooter:
         """Update the screen during each pass through the loop."""
         self.screen.fill(self.settings.background_color)
         self.ship.draw()
-        pygame.display.flip()     
+        
+        for bullet in self.bullets.sprites():
+            bullet.draw()
+        
+        pygame.display.flip() 
+
+    def _update_bullets(self):
+        """Update the position of bullets and get rid of old bullets."""
+        self.bullets.update()
+
+        # Get rid of bullets that have disappeared off the screen
+        for bullet in self.bullets.copy():
+            if bullet.rect.left >= self.settings.screen_width:
+                self.bullets.remove(bullet)    
 
     def _chek_events(self):
         """Handling keypresses and mouse events."""
@@ -53,6 +69,8 @@ class SidewaysShooter:
             self.ship.moving_up = True
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = True
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event: pygame.Event):
         """Respond to key releases."""
@@ -60,6 +78,11 @@ class SidewaysShooter:
             self.ship.moving_up = False
         elif event.key == pygame.K_DOWN:
             self.ship.moving_down = False
+
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group."""
+        new_bullet = Bullet(self.screen, self.settings, self.ship)
+        self.bullets.add(new_bullet)
 
 if __name__ == "__main__":
     game = SidewaysShooter()
