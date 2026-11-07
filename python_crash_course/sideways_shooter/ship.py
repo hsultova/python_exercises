@@ -14,10 +14,8 @@ class Ship:
         self.image = pygame.image.load('images/player.png')
 
         self.rect = self.image.get_rect()
-        self.rect.centery = self.screen_rect.centery
 
-        self.y = float(self.rect.y)
-        
+        self.center_ship()
         self.moving_up = False
         self.moving_down = False
 
@@ -33,3 +31,7 @@ class Ship:
             self.y += self.settings.ship_speed
 
         self.rect.y = self.y
+
+    def center_ship(self):
+        self.rect.centery = self.screen_rect.centery
+        self.y = float(self.rect.y)

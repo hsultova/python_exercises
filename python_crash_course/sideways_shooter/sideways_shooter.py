@@ -5,6 +5,7 @@ import pygame
 
 from bullet import Bullet
 from enemy import Enemy
+from shooter_stats import GameStats
 from ship import Ship
 from shooter_settings import Settings
 
@@ -14,9 +15,10 @@ class SidewaysShooter:
     def __init__(self):
         """Initialize the game assets and settings."""
         pygame.init()
-
+        
         self.clock = pygame.time.Clock()
         self.settings = Settings()
+        self.stats = GameStats(self.settings)
 
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption('Sideways Shooter')
@@ -27,17 +29,31 @@ class SidewaysShooter:
 
         self._spawn_enemies_at_random()
 
-    def run(self):
+    def run_game(self):
         """Run the game."""
         while True:
-            self._chek_events()
-            self.ship.update()
-            self._update_bullets()
-            self.enemies.update()
+            self._check_events()
+
+            if self.stats.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self._update_enemies()
 
             self._update_screen()
 
             self.clock.tick(self.settings.framerate)
+
+    def restart_game(self):
+        """Restart the game after the ship is hit."""
+        self.stats.ships_left -= 1
+        self.enemies.empty()
+        self.bullets.empty()
+        self._spawn_enemies_at_random()
+        self.ship.center_ship()
+
+    def end_game(self):
+        """End the game when the ship has no ships left."""
+        self.stats.game_active = False
 
     def _update_screen(self):
         """Update the screen during each pass through the loop."""
@@ -60,7 +76,14 @@ class SidewaysShooter:
             if bullet.rect.left >= self.settings.screen_width:
                 self.bullets.remove(bullet)    
 
-    def _chek_events(self):
+    def _update_enemies(self):
+        """Update the position of enemies and check for collisions with the ship."""
+        self.enemies.update()
+        if self._check_ship_enemy_collisions():
+            self._ship_hit()
+        self._check_enemies_bottom()
+
+    def _check_events(self):
         """Handling keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -118,6 +141,25 @@ class SidewaysShooter:
                 for enemy in enemies:
                     self.enemies.remove(enemy)
 
+    def _check_ship_enemy_collisions(self) -> bool:
+        """Check for collisions between the ship and enemies."""
+
+        return pygame.sprite.spritecollideany(self.ship, self.enemies) is not None
+    
+    def _ship_hit(self):
+        """Respond to the ship being hit by an enemy."""
+        if self.stats.ships_left > 0:
+            self.restart_game()
+        else:
+            self.end_game()
+
+    def _check_enemies_bottom(self):
+        """Check if any enemies have reached the left side of the screen."""
+        for enemy in self.enemies.sprites():
+            if enemy.rect.left <= 0:
+                self._ship_hit()
+                break
+
 if __name__ == "__main__":
     game = SidewaysShooter()
-    game.run()
+    game.run_game()
