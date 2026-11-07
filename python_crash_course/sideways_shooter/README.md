@@ -1,6 +1,9 @@
+
 # Sideways Shooter
 
 A Pygame arcade shooter where you pilot a ship, dodge incoming enemies, and fire bullets across the screen.
+
+<img width="900" height="600" alt="sideways_shooter" src="https://github.com/user-attachments/assets/46dc66b8-e75c-454f-9f59-1259d3013710" />
 
 ## Controls
 
