@@ -1,0 +1,17 @@
+import matplotlib.pyplot as plt
+
+from random_walk import RandomWalk
+
+while True:
+    random_walk = RandomWalk()
+    random_walk.fill_walk()
+
+    plt.style.use('classic')
+    fig, ax = plt.subplots()
+    ax.scatter(random_walk.x_values, random_walk.y_values, s=15)
+    ax.set_aspect('equal')
+    plt.show()
+
+    keep_running = input("Make another walk? (y/n): ")
+    if keep_running == 'n':
+        break
