@@ -21,6 +21,6 @@ _1,000 rolls of one D6. Results should be roughly even across all six faces._
 
 ### Two dice (`dice_visual.py`)
 
-![Frequency of sums for 50,000 rolls of a D6 and a D10](../../../screenshots/roll_dice.png)
+![Frequency of sums for 50,000 rolls of a D6 and a D10](../../../screenshots/rolling_dice.png)
 
 _50,000 rolls of a D6 plus a D10. Middle sums occur most often._

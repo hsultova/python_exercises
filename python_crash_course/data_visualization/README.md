@@ -18,7 +18,7 @@ Small visualization examples from _Python Crash Course_, built with
 
 ![Scatter plot of cube numbers with a color gradient](../../screenshots/cubes.png)
 
-_Cubes of the numbers 1 to 5000, colored by value._
+_Cubes of the numbers 1 to 1000, colored by value._
 
 ## Usage
 
