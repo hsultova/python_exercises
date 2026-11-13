@@ -14,11 +14,15 @@ header_row = next(rows)
 dates, highs, lows = [], [], []
 for row in rows:
     current_date = datetime.strptime(row[2], '%Y-%m-%d')
-    high = int(row[4])
-    low = int(row[5])
-    dates.append(current_date)
-    highs.append(high)
-    lows.append(low)
+    try:
+        high = int(row[4])
+        low = int(row[5])
+    except ValueError:
+        print(f"Missing data for {current_date}")
+    else:
+        dates.append(current_date)
+        highs.append(high)
+        lows.append(low)
 
 # Plot the high temperatures
 plt.style.use('seaborn-v0_8')
